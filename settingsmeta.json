@@ -1,0 +1,22 @@
+{
+  "name": "Lifx Skill",
+  "skillMetadata": {
+    "sections": [
+      {
+        "name": "Personal Access Token",
+        "fields": [
+          {
+            "type": "label",
+            "label": "Go to <a href='https://cloud.lifx.com/settings' target='_blank'>Lifx Settings</a>, generate a token, and insert it below"
+          },
+          {
+            "name": "Token",
+            "type": "password",
+            "label": "token",
+            "value": ""
+          }
+        ]
+      }
+    ]
+  }
+}
