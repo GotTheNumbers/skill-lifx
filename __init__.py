@@ -33,6 +33,7 @@ class LifxSkill(MycroftSkill):
     def __init__(self):
         super(LifxSkill, self).__init__(name="LifxSkill")
 
+    # The ON intent handler
     @intent_handler(IntentBuilder("OnIntent").require("OnKeyword"))
     def handle_on_intent(self, message):
         if len(self.settings["Token"]) == 0:
@@ -41,6 +42,16 @@ class LifxSkill(MycroftSkill):
         p = PIFX(self.settings["Token"])
         p.set_state(power="on")
         self.speak_dialog("on")
+
+    # The OFF intent handler
+    @intent_handler(IntentBuilder("OffIntent").require("OffKeyword"))
+    def handle_off_intent(self, message):
+        if len(self.settings["Token"]) == 0:
+            self.speak_dialog("please.add.access.token")
+            return
+        p = PIFX(self.settings["Token"])
+        p.set_state(power="off")
+        self.speak_dialog("off")
 
     # The "stop" method defines what Mycroft does when told to stop during
     # the skill's execution. In this case, since the skill's functionality
