@@ -46,29 +46,44 @@ class LifxSkill(MycroftSkill):
         if len(token) == 0:
             self.speak_dialog("please.add.access.token")
             return
-        engine = IntentDeterminationEngine()
-        #define lifx
-        lifx_keyword = ["turn"]
-        for lk in lifx_keyword:
-            engine.register_entity(lk, "LifxKeyword")
-        lifx_verbs = ["on", "off"]
-        for lv in lifx_verbs:
-            engine.register_entity(lv, "LifxVerb")
-        device_names = ["kitchen", "lamp"]
-        for dv in device_names:
-            engine.register_entity(dv, "DeviceName")
+    #     engine = IntentDeterminationEngine()
+    #     #define lifx
+    #     lifx_keyword = ["turn"]
+    #     for lk in lifx_keyword:
+    #         engine.register_entity(lk, "LifxKeyword")
+    #     lifx_verbs = ["on", "off"]
+    #     for lv in lifx_verbs:
+    #         engine.register_entity(lv, "LifxVerb")
+    #     device_names = ["kitchen", "lamp"]
+    #     for dv in device_names:
+    #         engine.register_entity(dv, "DeviceName")
+    #
+    #     lifx_intent = IntentBuilder("LifxIntent")\
+    #         .require("LifxKeyword")\
+    #         .require("LifxVerb")\
+    #         .require("DeviceName")\
+    #         .build()
+    #     engine.register_intent_parser(lifx_intent)
+    #
+    #     self.register_intent(lifx_intent, self.handle_lifx_intent)
+    #
+    # def handle_lifx_intent(self, message):
+    #     self.speak("THIS IS THE LIFX HANDLER!")
 
-        lifx_intent = IntentBuilder("LifxIntent")\
-            .require("LifxKeyword")\
-            .require("LifxVerb")\
-            .require("DeviceName")\
-            .build()
-        engine.register_intent_parser(lifx_intent)
-        
-        self.register_intent(lifx_intent, self.handle_lifx_intent)
+    # The ON intent handler
+    @intent_handler(IntentBuilder("OnIntent").require("OnKeyword"))
+    def handle_on_intent(self, message):
+        self.speak(str(message.data))
+        p = PIFX(self.settings["Token"])
+        p.set_state(power="on")
+        self.speak_dialog("on")
 
-    def handle_lifx_intent(self, message):
-        self.speak("THIS IS THE LIFX HANDLER!")
+    # The OFF intent handler
+    @intent_handler(IntentBuilder("OffIntent").require("OffKeyword"))
+    def handle_off_intent(self, message):
+        p = PIFX(self.settings["Token"])
+        p.set_state(power="off")
+        self.speak_dialog("off")
 
 
     # The "stop" method defines what Mycroft does when told to stop
